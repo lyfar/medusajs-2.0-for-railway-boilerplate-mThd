@@ -15,6 +15,14 @@
   "scripts": {
     "build": "medusa build && node src/scripts/postBuild.js",
     "seed": "medusa exec ./src/scripts/seed.ts",
+    "seed:diamonds": "medusa exec ./src/scripts/seed-diamonds.ts",
+    "seed:diamonds:remote": "npx tsx src/scripts/seed-diamonds-remote.ts",
+    "seed:fancy:diamonds:remote": "npx tsx src/scripts/seed-fancy-color-diamonds-remote.ts",
+    "cleanup:products:remote": "npx tsx src/scripts/cleanup-products-remote.ts",
+    "fix:inventory:remote": "npx tsx src/scripts/fix-inventory-remote.ts",
+    "create:diamond:types:remote": "npx tsx src/scripts/create-diamond-product-types-remote.ts",
+    "add:product:attributes:remote": "npx tsx src/scripts/add-product-type-attributes-remote.ts",
+    "add:key:options:remote": "npx tsx src/scripts/add-key-diamond-options-remote.ts",
     "ib": "init-backend",
     "start": "init-backend && cd .medusa/server && medusa start --verbose",
     "dev": "medusa develop",
@@ -57,6 +65,7 @@
     "react-dom": "^18.3.1",
     "react-email": "^3.0.4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"
   },

@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+      "replicate": {
+        "command": "npx",
+        "args": ["-y", "mcp-remote@latest", "https://mcp.replicate.com/sse"]
+      }
+    }
+  }

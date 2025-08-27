@@ -1,0 +1,28 @@
+---
+title: Catalog & SKU Strategy
+---
+
+# Catalog & SKU Strategy
+
+## Product Types
+
+- White Lab Diamonds – color D–K
+- Fancy Color Lab Diamonds – curated fancy colors
+
+## One Stone = One Quantity
+
+- Each stone has a unique `inventory_item_id` and certificate
+- Variants represent setting/metal views of the same stone
+- When sold, all variants become unavailable
+
+## Imports
+
+- Source: supplier CSV/JSON → normalize → admin API
+- Validators: required fields (shape, carat, color/clarity/cut, lab type, certificate)
+- Idempotent upsert by certificate or unique stone id
+
+## SKUs
+
+- Stone SKU: short code from carat‑shape‑color‑clarity (e.g., `1.93-OV-I-VS2`)
+- Variant SKU: stone SKU + setting/metal suffix
+

@@ -1,0 +1,41 @@
+---
+title: Backend Architecture
+---
+
+# Backend Architecture
+
+## Stack
+
+- MedusaJS 2.x on Railway
+- Modules: Inventory, File (MinIO), Email
+- Auth: `/auth/user/emailpass`
+
+## Configuration
+
+- CORS via env: `STORE_CORS`, `AUTH_CORS`, `ADMIN_CORS`
+- SDK publishable key set on storefront
+
+## Product Model
+
+- Product Types: White Lab Diamonds, Fancy Color Lab Diamonds
+- Diamond attributes stored in product metadata (shape, carat, color, clarity, cut, lab type, certificate)
+- Variants limited to setting/metal combinations; inventory is managed per stone (1:1)
+
+## Scripts (remote)
+
+- `seed-diamonds-remote.ts` – seed white
+- `seed-fancy-color-diamonds-remote.ts` – seed fancy
+- `cleanup-products-remote.ts` – wipe products
+- `fix-inventory-remote.ts` – set `stocked_quantity: 1` for each inventory item
+- `create-diamond-product-types-remote.ts` – create + attach product types
+
+## Inventory
+
+- Inventory level per `inventory_item_id` and `location_id`
+- Variants set `manage_inventory: true`; quantity controlled centrally
+
+## Admin Data Entry
+
+- Product metadata template provided for new stones
+- Optionally, product options can be added, but avoided to prevent variant explosion
+

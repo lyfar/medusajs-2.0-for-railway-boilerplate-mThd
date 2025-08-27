@@ -1,0 +1,38 @@
+---
+title: E‑commerce (Storefront)
+---
+
+# E‑commerce (Storefront)
+
+## Architecture
+
+- Next.js app directory, Medusa SDK for data
+- `/api/products` server route consolidates product list with `+metadata,*variants.calculated_price,+type.value`
+- Client fetch once, filter/sort client‑side (debounced) for responsiveness
+
+## Diamonds UI
+
+- Type switcher: White vs Fancy (distinct filters and tables)
+- Filters:
+  - Common: shape, cut grade, carat, price, lab type, certificate
+  - White: discrete color (D–K), clarity (FL–SI2)
+  - Fancy: fancy color set (Green, Pink, Blue, Yellow, etc.), clarity
+- Tooltips for education (custom InfoTooltip)
+
+## Tables
+
+- White table: Shape, Carat, Color, Clarity, Cut, Lab, Price, Certificate
+- Fancy table: Shape, Carat, Fancy Color, Clarity, Lab, Price, Certificate
+- Sortable headers, forced remount on type switch for stability
+
+## Performance
+
+- Debounced filter state, `useMemo` for computed lists
+- One initial fetch (limit 100) then pure client filtering
+- Removed hydration pitfalls; no direct `window` access in SSR paths
+
+## Notes
+
+- Prices normalized to currency units from Medusa `calculated_amount`
+- Product type read from `product.type.value` (not only metadata)
+
