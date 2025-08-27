@@ -43,8 +43,7 @@ const StoreTemplate = ({
     <div className="py-6">
       {/* Header */}
       <div 
-        className="relative h-32 bg-cover bg-center bg-no-repeat mb-8"
-        className="bg-gradient-to-r from-gray-900 to-gray-800"
+        className="relative h-32 bg-gradient-to-r from-gray-900 to-gray-800 mb-8"
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <Heading level="h1" className="text-4xl text-white font-light">

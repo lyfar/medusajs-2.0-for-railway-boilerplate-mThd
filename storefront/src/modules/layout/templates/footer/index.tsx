@@ -109,36 +109,30 @@ export default async function Footer() {
               <span className="txt-small-plus txt-ui-fg-base">Customer Care</span>
               <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
                 <li>
-                  <LocalizedClientLink
-                    href="/customer-service"
+                  <a
+                    href="mailto:info@diamonds.com"
                     className="hover:text-ui-fg-base"
                   >
                     Contact Us
-                  </LocalizedClientLink>
+                  </a>
                 </li>
                 <li>
                   <LocalizedClientLink
-                    href="/diamond-guide"
+                    href="/store"
                     className="hover:text-ui-fg-base"
                   >
-                    Diamond Guide
+                    Browse Diamonds
                   </LocalizedClientLink>
                 </li>
                 <li>
-                  <LocalizedClientLink
-                    href="/certificates"
-                    className="hover:text-ui-fg-base"
-                  >
+                  <span className="text-ui-fg-muted cursor-not-allowed">
                     Certificates
-                  </LocalizedClientLink>
+                  </span>
                 </li>
                 <li>
-                  <LocalizedClientLink
-                    href="/shipping-returns"
-                    className="hover:text-ui-fg-base"
-                  >
+                  <span className="text-ui-fg-muted cursor-not-allowed">
                     Shipping & Returns
-                  </LocalizedClientLink>
+                  </span>
                 </li>
               </ul>
             </div>
