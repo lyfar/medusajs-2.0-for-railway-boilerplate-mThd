@@ -1,11 +1,9 @@
 "use client"
 
 import { Suspense, useState, useCallback, useRef } from "react"
-import { Heading } from "@medusajs/ui"
 
 import { NewDiamondFilters } from "../components/diamond-filters/NewDiamondFilters"
 import { DiamondProductsTable } from "../components/diamond-products-table"
-import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
 const StoreTemplate = ({
@@ -46,9 +44,7 @@ const StoreTemplate = ({
         className="relative h-32 bg-gradient-to-r from-gray-900 to-gray-800 mb-8"
       >
         <div className="absolute inset-0 flex items-center justify-center">
-          <Heading level="h1" className="text-4xl text-white font-light">
-            Diamonds
-          </Heading>
+          <h1 className="text-4xl text-white font-light">Diamonds</h1>
         </div>
       </div>
 
@@ -61,7 +57,7 @@ const StoreTemplate = ({
 
           {/* Results Area */}
           <div className="flex-1">
-            <Suspense fallback={<SkeletonProductGrid />}>
+            <Suspense fallback={<div className="text-ui-fg-subtle">Loading…</div>}>
               <DiamondProductsTable 
                 key={`table-${selectedType}`}
                 searchQuery={searchQuery}

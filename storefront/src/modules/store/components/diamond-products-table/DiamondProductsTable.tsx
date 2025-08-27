@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Text, Button, Skeleton, Badge } from "@medusajs/ui"
+import { Text, Button, Badge } from "@medusajs/ui"
 import { ChevronDown } from "@medusajs/icons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { DiamondProductsTableProps, DiamondResult, SortConfig } from "./types"
@@ -85,11 +85,11 @@ const DiamondProductsTable = ({
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Skeleton className="h-5 w-32" />
+          <div className="h-5 w-32 bg-ui-bg-subtle animate-pulse rounded" />
         </div>
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-12 w-full" />
+            <div key={i} className="h-12 w-full bg-ui-bg-subtle animate-pulse rounded" />
           ))}
         </div>
       </div>
