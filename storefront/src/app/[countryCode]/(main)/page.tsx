@@ -6,9 +6,9 @@ import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "Premium Lab Grown Diamonds | Exquisite Diamond Jewelry",
   description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+    "Discover premium lab grown diamonds in every shape, color, and clarity. Sustainable luxury diamonds for engagement rings, wedding bands, and fine jewelry. Shop white and fancy color lab diamonds with certified quality.",
 }
 
 export default async function Home({
@@ -26,11 +26,6 @@ export default async function Home({
   return (
     <>
       <Hero />
-      <div className="py-12">
-        <ul className="flex flex-col gap-x-6">
-          <FeaturedProducts collections={collections} region={region} />
-        </ul>
-      </div>
     </>
   )
 }

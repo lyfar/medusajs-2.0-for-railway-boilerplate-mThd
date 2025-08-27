@@ -1,0 +1,119 @@
+---
+description: Guidelines for generating diamond store visuals using Replicate MCP with seedream-3 model
+alwaysApply: false
+---
+# Diamond Store Visual Generation with Replicate MCP
+
+## Model Configuration
+- **Primary Model**: `seedream-3` via Replicate MCP
+- **Use Case**: Website visuals for diamond ecommerce store (NOT product photography)
+- **Style**: Trendy yet minimalistic luxury aesthetic
+
+## Core Visual Style Guidelines
+
+### Color Palette
+- **Primary**: Clean whites, soft grays, and deep charcoal
+- **Accent**: Rose gold, champagne gold, or platinum silver
+- **Supporting**: Soft pastels (blush pink, pearl, ice blue)
+- **Avoid**: Overly saturated colors, neon, or garish tones
+
+### Visual Elements
+- **Lighting**: Soft, diffused lighting with subtle shadows
+- **Composition**: Clean, asymmetrical layouts with generous whitespace
+- **Textures**: Subtle marble, brushed metal, silk, or velvet textures
+- **Geometry**: Clean lines, gentle curves, minimal geometric patterns
+
+### Brand Positioning
+- **Luxury**: Sophisticated, refined, aspirational
+- **Modern**: Contemporary, fresh, innovative
+- **Trustworthy**: Professional, established, reliable
+- **Accessible**: Approachable luxury, not intimidating
+
+## Prompt Structure Template
+
+When generating visuals, use this structure:
+
+```
+[Visual Type] for luxury diamond jewelry ecommerce website, 
+trendy minimalistic style, [specific description],
+soft lighting, clean composition, luxury aesthetic,
+color palette: whites, grays, [accent color],
+professional photography style, high-end retail,
+--style-consistency --luxury-branding
+```
+
+## Common Visual Types for Diamond Store
+
+### Hero Banners
+- Abstract luxury backgrounds
+- Elegant lifestyle scenes
+- Sophisticated product staging areas
+- Celebration and milestone themes
+
+### Section Backgrounds
+- Subtle textured patterns
+- Gradient overlays
+- Geometric minimalist designs
+- Lifestyle and emotion-focused scenes
+
+### Category Headers
+- Clean, modern typography backgrounds
+- Subtle jewelry-related abstract elements
+- Lifestyle context images
+- Elegant pattern backgrounds
+
+### Promotional Graphics
+- Special occasion themes (weddings, anniversaries)
+- Seasonal luxury aesthetics
+- Gift-giving contexts
+- Celebration and milestone imagery
+
+## Style Consistency Rules
+
+1. **Always specify "trendy minimalistic" in prompts**
+2. **Include "luxury diamond jewelry ecommerce" for context**
+3. **Mention lighting preferences: "soft, diffused lighting"**
+4. **Specify color constraints from approved palette**
+5. **Add "professional photography style" for quality**
+6. **Include "high-end retail" for appropriate sophistication level**
+
+## Example Prompts
+
+### Hero Banner
+```
+Hero banner background for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, elegant abstract composition with soft geometric shapes,
+soft lighting, clean composition, luxury aesthetic,
+color palette: whites, pearl grays, rose gold accents,
+professional photography style, high-end retail
+```
+
+### Category Header
+```
+Category header background for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, subtle textured surface with gentle shadows,
+soft lighting, clean composition, luxury aesthetic,
+color palette: whites, charcoal grays, platinum silver accents,
+professional photography style, high-end retail
+```
+
+### Promotional Banner
+```
+Promotional banner for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, celebration theme with elegant details,
+soft lighting, clean composition, luxury aesthetic,
+color palette: whites, soft grays, champagne gold accents,
+professional photography style, high-end retail
+```
+
+## Quality Standards
+- **Resolution**: Request high-resolution outputs
+- **Composition**: Ensure adequate whitespace for text overlay
+- **Versatility**: Generate images that work across different device sizes
+- **Brand Consistency**: Maintain consistent luxury aesthetic across all visuals
+
+## Usage Notes
+- Use these visuals for website headers, banners, backgrounds, and promotional graphics
+- NOT for product photography - these are brand/lifestyle visuals only
+- Test generated images across mobile and desktop layouts
+- Maintain consistency in style and quality across the entire website

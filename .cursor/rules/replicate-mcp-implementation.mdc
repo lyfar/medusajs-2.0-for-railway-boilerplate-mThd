@@ -1,0 +1,138 @@
+---
+globs: *.ts,*.tsx,*.js,*.jsx
+description: Technical implementation guidelines for Replicate MCP integration
+---
+
+# Replicate MCP Implementation Guide
+
+## MCP Server Configuration
+The Replicate MCP server is configured in [mcp.json](mdc:.cursor/mcp.json):
+```json
+{
+  "mcpServers": {
+    "replicate": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://mcp.replicate.com/sse"]
+    }
+  }
+}
+```
+
+## Primary Model Selection
+- **Default Model**: `seedream-3`
+- **Backup Models**: Consider `flux-schnell` or `flux-pro` for alternative styles
+- **Use Case**: Website visual generation for diamond jewelry ecommerce
+
+## MCP Tool Usage Best Practices
+
+### Model Search and Selection
+1. Use `mcp_replicate_search_models` to find available models if needed
+2. Always verify model capabilities before use
+3. Prefer `seedream-3` for consistency with brand guidelines
+
+### Image Generation Workflow
+1. **Create Prediction**: Use `mcp_replicate_create_predictions` or `mcp_replicate_create_models_predictions`
+2. **Monitor Status**: Check prediction status with `mcp_replicate_get_predictions`
+3. **Handle Results**: Process generated images appropriately
+
+### Required Parameters for seedream-3
+```typescript
+{
+  input: {
+    prompt: string, // Following diamond store visual guidelines
+    width?: number, // Default: 1024, adjust for use case
+    height?: number, // Default: 1024, adjust for use case
+    num_outputs?: number, // 1-4, usually 1 for consistency
+    guidance_scale?: number, // 3.5-7, use 5 for balanced results
+    num_inference_steps?: number, // 20-50, use 28 for quality
+    seed?: number // For reproducible results when needed
+  }
+}
+```
+
+### Error Handling
+- Always include error handling for failed predictions
+- Implement retry logic for temporary failures
+- Log prediction IDs for debugging
+- Handle rate limiting gracefully
+
+### Performance Optimization
+- Cache successful prompts and their outputs
+- Batch multiple image generation requests when possible
+- Use appropriate image dimensions for the use case
+- Consider using webhooks for long-running predictions
+
+## Integration with Diamond Store Codebase
+
+### File Organization
+- Store generated images in `public/generated-visuals/`
+- Keep prompt templates in `src/lib/prompts/`
+- Maintain image metadata in `src/lib/generated-assets.json`
+
+### TypeScript Types
+```typescript
+interface DiamondStoreVisual {
+  id: string;
+  type: 'hero' | 'category' | 'promotional' | 'background';
+  prompt: string;
+  url: string;
+  dimensions: { width: number; height: number };
+  generatedAt: Date;
+  replicateId: string;
+}
+
+interface PromptTemplate {
+  name: string;
+  category: string;
+  basePrompt: string;
+  variables?: Record<string, string>;
+}
+```
+
+### Usage in React Components
+```typescript
+// Example hook for managing generated visuals
+const useGeneratedVisuals = () => {
+  const [loading, setLoading] = useState(false);
+  const [visuals, setVisuals] = useState<DiamondStoreVisual[]>([]);
+  
+  const generateVisual = async (prompt: string, type: string) => {
+    setLoading(true);
+    try {
+      // Use Replicate MCP tools here
+      const prediction = await createPrediction(prompt);
+      // Handle result...
+    } catch (error) {
+      console.error('Visual generation failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return { visuals, generateVisual, loading };
+};
+```
+
+## Environment Variables
+Ensure these are set for production:
+```
+REPLICATE_API_TOKEN=your_token_here
+```
+
+## Monitoring and Analytics
+- Track generation success/failure rates
+- Monitor API usage and costs
+- Log popular prompt patterns
+- Measure visual performance impact
+
+## Testing Strategy
+- Create test prompts for each visual category
+- Implement visual regression testing
+- Test across different viewport sizes
+- Validate generated content meets brand guidelines
+
+## Deployment Considerations
+- Pre-generate common visuals during build time
+- Implement fallback images for failed generations
+- Consider CDN integration for generated assets
+- Set up monitoring for MCP server availability

@@ -1,1 +1,58 @@
+# IDEs
 .idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.swc/
+.cache/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Package manager files (be careful - some should be committed)
+# yarn.lock - usually should be committed
+# package-lock.json - usually should be committed  
+# pnpm-lock.yaml - usually should be committed
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+*.temp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Large files that shouldn't be in git
+*.log
+*.gz

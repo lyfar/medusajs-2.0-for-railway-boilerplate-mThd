@@ -57,12 +57,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${product.title} | Medusa Store`,
-    description: `${product.title}`,
+    title: `${product.title} | Diamonds - Certified Lab Grown Diamonds`,
+    description: `${product.title} - Premium certified lab grown diamond. Sustainable luxury with exceptional quality and brilliance.`,
     openGraph: {
-      title: `${product.title} | Medusa Store`,
-      description: `${product.title}`,
-      images: product.thumbnail ? [product.thumbnail] : [],
+      title: `${product.title} | Diamonds - Certified Lab Grown Diamonds`,
+      description: `${product.title} - Premium certified lab grown diamond. Sustainable luxury with exceptional quality and brilliance.`,
+      images: product.thumbnail ? [product.thumbnail] : ['/images/generated/product-white-bg-1.webp'],
     },
   }
 }

@@ -7,10 +7,22 @@ type ImageGalleryProps = {
 }
 
 const ImageGallery = ({ images }: ImageGalleryProps) => {
+  // Fallback images for when product images are missing
+  const fallbackImages = [
+    '/images/generated/product-white-bg-1.webp',
+    '/images/generated/product-fancy-color.webp'
+  ]
+  
+  // Use product images if available, otherwise use fallback images
+  const displayImages = images.length > 0 ? images : [
+    { id: 'fallback-1', url: fallbackImages[0] },
+    { id: 'fallback-2', url: fallbackImages[1] }
+  ]
+
   return (
     <div className="flex items-start relative">
       <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
-        {images.map((image, index) => {
+        {displayImages.map((image, index) => {
           return (
             <Container
               key={image.id}

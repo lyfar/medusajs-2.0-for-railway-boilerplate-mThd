@@ -102,13 +102,13 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 className="w-full"
                 data-testid="mobile-actions-button"
               >
-                <div className="flex items-center justify-between w-full">
-                  <span>
+                <div className="flex items-center justify-between w-full min-w-0">
+                  <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap pr-2">
                     {variant
-                      ? Object.values(options).join(" / ")
+                      ? Object.values(options).join(" / ")
                       : "Select Options"}
                   </span>
-                  <ChevronDown />
+                  <ChevronDown className="flex-shrink-0" />
                 </div>
               </Button>
               <Button

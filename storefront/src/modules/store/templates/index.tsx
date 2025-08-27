@@ -1,10 +1,12 @@
-import { Suspense } from "react"
+"use client"
 
+import { Suspense, useState, useCallback, useRef } from "react"
+import { Heading } from "@medusajs/ui"
+
+import { NewDiamondFilters } from "../components/diamond-filters/NewDiamondFilters"
+import { DiamondProductsTable } from "../components/diamond-products-table"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
-import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-
-import PaginatedProducts from "./paginated-products"
 
 const StoreTemplate = ({
   sortBy,
@@ -17,27 +19,64 @@ const StoreTemplate = ({
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
+  const [selectedType, setSelectedType] = useState<'white' | 'fancy'>('white')
+  const [searchQuery, setSearchQuery] = useState("")
+  const [currentFilters, setCurrentFilters] = useState<any>({})
+
+  // Use refs to avoid stale closures in useCallback
+  const selectedTypeRef = useRef(selectedType)
+  const searchQueryRef = useRef(searchQuery)
+  selectedTypeRef.current = selectedType
+  searchQueryRef.current = searchQuery
+
+  const handleFiltersChange = useCallback((filters: any) => {
+    setCurrentFilters(filters)
+    if (filters.selectedType !== selectedTypeRef.current) {
+      setSelectedType(filters.selectedType)
+    }
+    if (filters.searchQuery !== searchQueryRef.current) {
+      setSearchQuery(filters.searchQuery)
+    }
+  }, [])
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1 data-testid="store-page-title">All products</h1>
+    <div className="py-6">
+      {/* Header */}
+      <div 
+        className="relative h-32 bg-cover bg-center bg-no-repeat mb-8"
+        className="bg-gradient-to-r from-gray-900 to-gray-800"
+      >
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Heading level="h1" className="text-4xl text-white font-light">
+            Diamonds
+          </Heading>
         </div>
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            countryCode={countryCode}
-          />
-        </Suspense>
+      </div>
+
+      <div className="content-container">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters Sidebar */}
+          <div className="lg:w-80 flex-shrink-0">
+            <NewDiamondFilters onFiltersChange={handleFiltersChange} />
+          </div>
+
+          {/* Results Area */}
+          <div className="flex-1">
+            <Suspense fallback={<SkeletonProductGrid />}>
+              <DiamondProductsTable 
+                key={`table-${selectedType}`}
+                searchQuery={searchQuery}
+                selectedType={selectedType}
+                filters={currentFilters}
+              />
+            </Suspense>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
+StoreTemplate.displayName = 'StoreTemplate'
 
 export default StoreTemplate

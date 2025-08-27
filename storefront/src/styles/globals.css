@@ -47,6 +47,28 @@
   input[type="search"]::-webkit-search-results-decoration {
     -webkit-appearance: none;
   }
+
+  /* Diamond filter range slider styles */
+  .slider-thumb::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #1e293b;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .slider-thumb::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #1e293b;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 }
 
 @layer components {

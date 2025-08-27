@@ -4,8 +4,8 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import StoreTemplate from "@modules/store/templates"
 
 export const metadata: Metadata = {
-  title: "Store",
-  description: "Explore all of our products.",
+  title: "Diamonds | Search & Filter Certified Lab Grown Diamonds",
+  description: "Browse our complete collection of lab grown diamonds. Filter by shape, color, clarity, cut, and carat weight. Certified white and fancy color lab diamonds with detailed specifications.",
 }
 
 type Params = {

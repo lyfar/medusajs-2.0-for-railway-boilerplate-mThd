@@ -1,0 +1,192 @@
+---
+description: Prompt engineering best practices for diamond store visual generation
+---
+
+# Diamond Store Prompt Engineering Guide
+
+## Prompt Engineering Principles
+
+### Core Formula
+```
+[Context] + [Style] + [Subject] + [Technical Specs] + [Quality Modifiers]
+```
+
+### Essential Components
+1. **Context**: "luxury diamond jewelry ecommerce website"
+2. **Style**: "trendy minimalistic"
+3. **Subject**: Specific visual element needed
+4. **Technical**: Lighting, composition, colors
+5. **Quality**: "professional photography style, high-end retail"
+
+## Prompt Templates by Use Case
+
+### Hero Section Backgrounds
+```
+Hero banner background for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, [SPECIFIC_DESCRIPTION],
+soft diffused lighting, generous whitespace, clean composition,
+color palette: white, soft gray, [ACCENT_COLOR],
+professional photography style, high-end retail aesthetic,
+4k resolution, commercial quality
+```
+
+**Variables to customize:**
+- `[SPECIFIC_DESCRIPTION]`: "abstract geometric patterns", "elegant flowing curves", "subtle marble texture"
+- `[ACCENT_COLOR]`: "rose gold", "platinum silver", "champagne gold"
+
+### Category Page Headers
+```
+Category header visual for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, [CATEGORY_THEME],
+soft lighting with gentle shadows, clean modern composition,
+color palette: pearl white, charcoal gray, [ACCENT_COLOR],
+professional photography style, high-end retail,
+suitable for text overlay, wide aspect ratio
+```
+
+**Category themes:**
+- Engagement: "romantic elegant atmosphere, soft pink undertones"
+- Wedding: "timeless classic elements, pure white emphasis"
+- Anniversary: "celebration motifs, warm golden tones"
+- Fashion: "contemporary bold patterns, modern geometric shapes"
+
+### Promotional Banners
+```
+Promotional banner for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, [OCCASION] theme,
+soft dramatic lighting, sophisticated composition,
+color palette: whites, grays, [ACCENT_COLOR],
+professional photography style, luxury retail environment,
+space for promotional text, call-to-action ready
+```
+
+**Occasion themes:**
+- "Valentine's Day romantic elegance"
+- "Mother's Day appreciation sentiment"
+- "Holiday season celebration"
+- "Black Friday luxury sale"
+
+### Background Textures
+```
+Subtle background texture for luxury diamond jewelry ecommerce website,
+trendy minimalistic style, [TEXTURE_TYPE],
+soft even lighting, seamless pattern,
+color palette: off-white, light gray, subtle [ACCENT_COLOR],
+professional photography style, high-end retail,
+repeatable pattern, non-distracting
+```
+
+**Texture types:**
+- "fine brushed metal surface"
+- "soft fabric texture"
+- "minimal geometric pattern"
+- "organic flowing lines"
+
+## Advanced Prompt Techniques
+
+### Layering Descriptions
+Start broad, then add specific details:
+```
+// Base
+luxury ecommerce background, minimalistic
+
+// Add style
+luxury ecommerce background, trendy minimalistic style, diamond jewelry context
+
+// Add specifics
+luxury diamond jewelry ecommerce background, trendy minimalistic style, 
+soft geometric patterns, rose gold accents
+
+// Add technical details
+luxury diamond jewelry ecommerce background, trendy minimalistic style,
+soft geometric patterns, rose gold accents, professional photography,
+soft lighting, clean composition, high-end retail aesthetic
+```
+
+### Negative Prompts (What to Avoid)
+Always mentally include these exclusions:
+- No busy patterns or cluttered compositions
+- No overly saturated colors
+- No cartoon or illustration styles
+- No product placement or jewelry items
+- No harsh lighting or dramatic shadows
+- No text or typography elements
+
+### Quality Enhancers
+Add these for premium results:
+- "professional commercial photography"
+- "high-end retail aesthetic"
+- "luxury brand quality"
+- "sophisticated composition"
+- "premium visual design"
+
+## Consistency Techniques
+
+### Seed Usage
+For related visuals, use the same seed:
+```typescript
+const baseParams = {
+  seed: 12345, // Use same seed for visual consistency
+  guidance_scale: 5,
+  num_inference_steps: 28
+};
+```
+
+### Color Palette Enforcement
+Always specify exact color relationships:
+```
+primary color: pure white (#FFFFFF),
+secondary color: soft gray (#F5F5F5),
+accent color: rose gold (#E8B4A0),
+avoid: bright colors, neon tones, oversaturation
+```
+
+### Style Anchoring
+Reference established luxury brands indirectly:
+```
+"in the style of high-end jewelry boutique",
+"luxury retail environment aesthetic",
+"premium brand visual language"
+```
+
+## Testing and Iteration
+
+### A/B Testing Prompts
+Create variations to find optimal results:
+```
+Version A: "soft geometric patterns"
+Version B: "subtle flowing curves"  
+Version C: "minimal abstract shapes"
+```
+
+### Progressive Refinement
+1. Start with basic prompt
+2. Test and evaluate result
+3. Add specific refinements
+4. Re-test with adjustments
+5. Document successful patterns
+
+### Quality Metrics
+Evaluate generated visuals on:
+- Brand alignment (luxury, modern, trustworthy)
+- Technical quality (resolution, lighting, composition)
+- Usability (text overlay space, responsive design compatibility)
+- Emotional impact (sophisticated, aspirational, accessible)
+
+## Common Pitfalls to Avoid
+
+1. **Over-specification**: Too many details can confuse the model
+2. **Conflicting styles**: Mixing minimalistic with ornate elements
+3. **Color overload**: Using too many accent colors
+4. **Context confusion**: Mixing product and brand visual requests
+5. **Technical misalignment**: Wrong aspect ratios for intended use
+
+## Prompt Versioning
+Keep track of successful prompts:
+```json
+{
+  "hero_v1": "Base hero prompt...",
+  "hero_v2": "Refined hero with better lighting...",
+  "hero_v3": "Final optimized hero prompt..."
+}
+```
