@@ -4,11 +4,27 @@ title: AI Automations
 
 # AI Automations
 
-## Support Bot
+This section outlines AI-powered automations to enhance customer experience and operational efficiency.
 
-- Order status, FAQs, routing to human
+## Customer Support Bot
 
-## Order Updates
+- **Functionality**: A chatbot to handle common customer queries, including order status lookups, FAQs, and routing complex issues to a human agent.
+- **Goal**: Reduce response times and free up human agents for high-value interactions.
 
-- Webhooks → notifications (email/SMS) for status changes
+## Proactive Order Updates
+
+- **Functionality**: Automated notifications (via email or SMS) triggered by order status changes (e.g., shipped, out for delivery, delivered).
+- **Goal**: Improve customer communication and reduce "Where is my order?" inquiries.
+
+## Process Flow
+
+```mermaid
+graph TD
+    A[Customer Initiates Contact] --> B{Support Bot};
+    B --> C{FAQ & Order Status};
+    B --> D[Human Agent];
+    E[Order Status Change] --> F[Webhook];
+    F --> G[Automated Notification];
+    G --> H[Email/SMS Sent];
+```
 

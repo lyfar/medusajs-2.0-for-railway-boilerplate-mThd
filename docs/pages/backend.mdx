@@ -4,38 +4,37 @@ title: Backend Architecture
 
 # Backend Architecture
 
-## Stack
+This section describes the proposed backend system, built for scalability and reliability.
 
-- MedusaJS 2.x on Railway
-- Modules: Inventory, File (MinIO), Email
-- Auth: `/auth/user/emailpass`
+## Proposed Stack
 
-## Configuration
+- **Platform**: A modern e-commerce platform (e.g., MedusaJS 2.x) hosted on a scalable cloud provider like Railway.
+- **Core Modules**: The system will include modules for robust inventory management, file storage (e.g., MinIO for images/certificates), and email notifications.
 
-- CORS via env: `STORE_CORS`, `AUTH_CORS`, `ADMIN_CORS`
-- SDK publishable key set on storefront
+## Product Data Model
 
-## Product Model
+- **Product Types**: The catalog will be structured to support both "White Lab Diamonds" and "Fancy Color Lab Diamonds".
+- **Key Attributes**: Essential diamond characteristics (shape, carat, color, clarity, cut, lab type, certificate) will be stored as primary product data.
+- **Inventory Logic**: Each unique diamond stone will be managed as a single inventory item to prevent overselling, even if it's presented with different settings or metals.
 
-- Product Types: White Lab Diamonds, Fancy Color Lab Diamonds
-- Diamond attributes stored in product metadata (shape, carat, color, clarity, cut, lab type, certificate)
-- Variants limited to setting/metal combinations; inventory is managed per stone (1:1)
+## High-Level System Design
 
-## Scripts (remote)
+```mermaid
+graph TD
+    subgraph "Cloud Platform (e.g., Railway)"
+        A[E-commerce Core]
+        B[Database]
+        C[File Storage]
+        D[Background Jobs]
+    end
 
-- `seed-diamonds-remote.ts` – seed white
-- `seed-fancy-color-diamonds-remote.ts` – seed fancy
-- `cleanup-products-remote.ts` – wipe products
-- `fix-inventory-remote.ts` – set `stocked_quantity: 1` for each inventory item
-- `create-diamond-product-types-remote.ts` – create + attach product types
+    E[Admin Dashboard] --> A
+    F[Storefront] --> A
+    A --> B
+    A --> C
+    A --> D
 
-## Inventory
-
-- Inventory level per `inventory_item_id` and `location_id`
-- Variants set `manage_inventory: true`; quantity controlled centrally
-
-## Admin Data Entry
-
-- Product metadata template provided for new stones
-- Optionally, product options can be added, but avoided to prevent variant explosion
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#ccf,stroke:#333,stroke-width:2px
+```
 

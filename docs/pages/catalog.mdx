@@ -4,25 +4,37 @@ title: Catalog & SKU Strategy
 
 # Catalog & SKU Strategy
 
-## Product Types
+This section outlines the proposed strategy for managing a large and detailed diamond catalog.
 
-- White Lab Diamonds – color D–K
-- Fancy Color Lab Diamonds – curated fancy colors
+## Product Assortment
 
-## One Stone = One Quantity
+- **White Lab Diamonds**: A curated selection of high-quality diamonds in the D–K color range.
+- **Fancy Color Lab Diamonds**: A collection of premium diamonds in sought-after fancy colors.
 
-- Each stone has a unique `inventory_item_id` and certificate
-- Variants represent setting/metal views of the same stone
-- When sold, all variants become unavailable
+## Inventory & Variant Strategy
 
-## Imports
+- **Unique Stone Management**: Each diamond is treated as a unique, single-quantity item tied to its certificate, ensuring no double-selling.
+- **Setting & Metal Options**: Customers can visualize a single stone with various settings (e.g., ring, pendant) and metals, which will be managed as product variants without affecting the stone's core inventory.
 
-- Source: supplier CSV/JSON → normalize → admin API
-- Validators: required fields (shape, carat, color/clarity/cut, lab type, certificate)
-- Idempotent upsert by certificate or unique stone id
+## Data Import & Management
 
-## SKUs
+- **Process**: A streamlined process will be developed to import, normalize, and validate data from supplier feeds (CSV/JSON).
+- **Quality Control**: Automated validators will ensure all incoming products meet required data standards (e.g., shape, carat, certificate).
 
-- Stone SKU: short code from carat‑shape‑color‑clarity (e.g., `1.93-OV-I-VS2`)
-- Variant SKU: stone SKU + setting/metal suffix
+## SKU Naming Convention
+
+- **Proposal**: A clean, human-readable SKU system will be implemented to simplify inventory management and reporting.
+  - **Example Stone SKU**: `1.93-OV-I-VS2` (Carat-Shape-Color-Clarity)
+  - **Example Variant SKU**: `1.93-OV-I-VS2-YG-14K-SOL` (Stone + Setting Details)
+
+## Catalog Workflow
+
+```mermaid
+graph TD
+    A[Supplier Data Feed] --> B{Normalize & Validate};
+    B --> C[Create/Update Products via API];
+    C --> D{Assign to Product Type};
+    D --> E[Storefront Display];
+    F[Admin] --> C;
+```
 

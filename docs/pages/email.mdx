@@ -4,11 +4,28 @@ title: Email Marketing
 
 # Email Marketing
 
-## Flows
+This section outlines the proposed email marketing strategy to nurture leads and drive sales.
 
-- Welcome, browse abandon, cart abandon, post‑purchase
+## Automated Email Flows
 
-## Templates
+- **Welcome Series**: A sequence of emails to introduce new subscribers to the brand.
+- **Browse Abandonment**: A reminder email sent to users who viewed products but did not add to cart.
+- **Cart Abandonment**: A sequence to recover potentially lost sales from users who added items to their cart but did not purchase.
+- **Post-Purchase**: A flow that includes order confirmation, shipping updates, and a request for review.
 
-- Transactional (order, shipping), promotional blocks
+## Email Campaigns
+
+- **Templates**: Professionally designed templates for both transactional (e.g., order confirmations) and promotional (e.g., new arrivals, sales) emails.
+
+## Customer Journey & Email
+
+```mermaid
+graph TD
+    A[Signs Up] --> B(Welcome Series);
+    C[Views Product] --> D{Adds to Cart?};
+    D -- No --> E(Browse Abandonment);
+    D -- Yes --> F{Purchases?};
+    F -- No --> G(Cart Abandonment);
+    F -- Yes --> H(Post-Purchase Flow);
+```
 

@@ -4,35 +4,36 @@ title: E‑commerce (Storefront)
 
 # E‑commerce (Storefront)
 
-## Architecture
+This section details the proposed features and user experience for the customer-facing website.
 
-- Next.js app directory, Medusa SDK for data
-- `/api/products` server route consolidates product list with `+metadata,*variants.calculated_price,+type.value`
-- Client fetch once, filter/sort client‑side (debounced) for responsiveness
+## Core User Experience
 
-## Diamonds UI
+- **Technology**: A modern, fast, and mobile-friendly storefront built with technologies like Next.js.
+- **Data Strategy**: Product information will be fetched efficiently from the backend, with filtering and sorting handled instantly in the user's browser for a seamless experience.
 
-- Type switcher: White vs Fancy (distinct filters and tables)
-- Filters:
-  - Common: shape, cut grade, carat, price, lab type, certificate
-  - White: discrete color (D–K), clarity (FL–SI2)
-  - Fancy: fancy color set (Green, Pink, Blue, Yellow, etc.), clarity
-- Tooltips for education (custom InfoTooltip)
+## Diamond Search & Discovery
 
-## Tables
+- **Type Switcher**: A clear distinction between "White" and "Fancy Color" diamonds, each with tailored filters.
+- **Advanced Filtering**:
+  - **Universal Filters**: Shape, cut grade, carat, price, and lab certification.
+  - **White Diamond Filters**: Specific color grades (D–K) and clarity grades (FL–SI2).
+  - **Fancy Diamond Filters**: A curated selection of fancy colors.
+- **Educational Tooltips**: Helpful information will be available to guide users on topics like clarity and cut.
 
-- White table: Shape, Carat, Color, Clarity, Cut, Lab, Price, Certificate
-- Fancy table: Shape, Carat, Fancy Color, Clarity, Lab, Price, Certificate
-- Sortable headers, forced remount on type switch for stability
+## Diamond Results Display
 
-## Performance
+- **Custom Tables**: Two distinct table layouts will be designed to showcase the key attributes of white vs. fancy colored diamonds.
+- **Sortable Headers**: Users can easily sort the diamond listings by any attribute, such as price or carat weight.
 
-- Debounced filter state, `useMemo` for computed lists
-- One initial fetch (limit 100) then pure client filtering
-- Removed hydration pitfalls; no direct `window` access in SSR paths
+## User Journey
 
-## Notes
-
-- Prices normalized to currency units from Medusa `calculated_amount`
-- Product type read from `product.type.value` (not only metadata)
+```mermaid
+graph TD
+    A[Homepage] --> B[View All Diamonds];
+    B --> C{Filter & Sort};
+    C --> D[View Diamond Details];
+    D --> E[Add to Cart];
+    E --> F[Checkout];
+    B --> D;
+```
 
