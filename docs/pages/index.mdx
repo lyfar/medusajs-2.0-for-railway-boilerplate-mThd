@@ -4,9 +4,9 @@ title: Lab Grown Diamonds – Proposal
 
 # Proposal
 
-**Total investment**: 200,000 HKD
+**Total investment (one‑off build)**: 200,000 HKD
 
-This proposal covers the full stack required to launch and scale a lab‑grown diamond business: ecommerce, backend, catalog operations, SEO/content, branding, social, automations and lifecycle marketing.
+This proposal outlines the plan to launch a premium lab‑grown diamond storefront and supporting operations. It focuses on outcomes, scope and timelines without technical implementation details.
 
 ## Deliverables (high‑level)
 
@@ -40,16 +40,33 @@ This proposal covers the full stack required to launch and scale a lab‑grown d
 - Email (flows + templates): 8,000
 - Contingency (3%): 5,000
 
-> Total: 200,000 HKD
+> Total one‑off: 200,000 HKD
 
-## What’s implemented already (high‑level)
+## Ongoing Monthly Retainer (HKD)
 
-- Product types: White Lab Diamonds, Fancy Color Lab Diamonds
-- Remote scripts: seeding, fancy seeding, cleanup, inventory fix, product‑type assignment
-- Inventory: per inventory item/location with 1:1 stone control
-- Storefront: diamond filters (white/fancy), debounced client filtering, dynamic tables
-- API: Next.js route uses Medusa SDK with `+metadata,*variants.calculated_price,+type.value`
-- Stability: fixed CORS, hydration warnings, build and import/export errors
+- Hosting & infrastructure (Railway, object storage, search, monitoring): 6,000–12,000
+- Social Media Management (planning, posting, reporting): 8,000
+- Social Content Production (design, copy, short‑form video): 8,000
+- Optional: Performance marketing management (ex. paid social/search): on request
 
-Use the sidebar to see details per area.
+## Vision Diagram
+
+```mermaid
+flowchart LR
+  A[Visitors] --> B{Storefront}
+  B --> C[Diamonds Listing]
+  B --> D[Product Detail]
+  C --> E[Filters & Sort]
+  D --> F[Add to Cart]
+  F --> G[Checkout]
+  G --> H[Order Confirmation]
+  subgraph Operations
+    I[Catalog Updates]
+    J[Customer Care]
+    K[Analytics]
+  end
+  H --> Operations
+```
+
+Use the sidebar to see scope per area.
 
