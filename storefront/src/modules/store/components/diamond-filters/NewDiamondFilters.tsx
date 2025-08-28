@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useMemo } from "react"
 import { Button, Input, Badge, Text, Heading } from "@medusajs/ui"
 import { clx } from "@medusajs/ui"
 import { useProductData } from "../../hooks/useProductData"
@@ -14,17 +14,12 @@ interface FilterState {
   selectedClarities: string[]
 }
 
-const SHAPES = ['Round', 'Oval', 'Princess', 'Cushion', 'Emerald', 'Asscher', 'Pear', 'Marquise', 'Radiant', 'Heart']
-const WHITE_COLORS = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
-const FANCY_COLORS = ['Fancy Yellow', 'Fancy Pink', 'Fancy Blue', 'Fancy Green', 'Fancy Orange']
-const CLARITIES = ['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2']
-
 interface NewDiamondFiltersProps {
   onFiltersChange?: (filters: FilterState) => void
 }
 
 export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) => {
-  const { ranges, loading } = useProductData()
+  const { allDiamonds, ranges, loading } = useProductData()
   
   const [filters, setFilters] = useState<FilterState>({
     selectedType: 'white',
@@ -37,11 +32,16 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
 
   // Update ranges when data loads
   useEffect(() => {
-    setFilters((prev: FilterState) => ({
-      ...prev,
-      caratRange: ranges.caratRange,
-      priceRange: ranges.priceRange
-    }))
+    setFilters((prev: FilterState) => {
+      const sameCarat = Array.isArray(prev.caratRange) && prev.caratRange[0] === ranges.caratRange[0] && prev.caratRange[1] === ranges.caratRange[1]
+      const samePrice = Array.isArray(prev.priceRange) && prev.priceRange[0] === ranges.priceRange[0] && prev.priceRange[1] === ranges.priceRange[1]
+      if (sameCarat && samePrice) return prev
+      return {
+        ...prev,
+        caratRange: ranges.caratRange,
+        priceRange: ranges.priceRange
+      }
+    })
   }, [ranges])
 
   // Notify parent of changes
@@ -92,6 +92,45 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
     return shapes[shape] || '●'
   }
 
+  // Safeguard against null/undefined ranges in state
+  const normalizeRange = (r: any, fallback: [number, number]): [number, number] => {
+    const a = Array.isArray(r) ? r[0] : undefined
+    const b = Array.isArray(r) ? r[1] : undefined
+    const min = typeof a === 'number' && isFinite(a) ? a : fallback[0]
+    const max = typeof b === 'number' && isFinite(b) ? b : fallback[1]
+    return [min, max]
+  }
+
+  const currentCaratRange: [number, number] = normalizeRange(filters.caratRange, ranges.caratRange)
+  const currentPriceRange: [number, number] = normalizeRange(filters.priceRange, ranges.priceRange)
+
+  // Derive available options from loaded diamonds (hide filters with no data)
+  const diamondsByType = useMemo(() => {
+    return allDiamonds.filter((d) =>
+      filters.selectedType === 'white'
+        ? d.productType === 'White Lab Diamonds'
+        : d.productType === 'Fancy Color Lab Diamonds'
+    )
+  }, [allDiamonds, filters.selectedType])
+
+  const availableShapes = useMemo(() => {
+    const set = new Set<string>()
+    diamondsByType.forEach((d) => d.shape && set.add(d.shape))
+    return Array.from(set).sort()
+  }, [diamondsByType])
+
+  const availableColors = useMemo(() => {
+    const set = new Set<string>()
+    diamondsByType.forEach((d) => d.color && set.add(d.color))
+    return Array.from(set).sort()
+  }, [diamondsByType])
+
+  const availableClarities = useMemo(() => {
+    const set = new Set<string>()
+    diamondsByType.forEach((d) => d.clarity && set.add(d.clarity))
+    return Array.from(set).sort()
+  }, [diamondsByType])
+
   if (loading) {
     return (
       <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -128,68 +167,74 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
       </div>
 
       {/* Shape Selector */}
-      <div className="space-y-3">
-        <Heading level="h3" className="text-sm uppercase tracking-wide">SHAPE</Heading>
-        <div className="grid grid-cols-4 gap-3">
-          {SHAPES.map(shape => (
-            <Button
-              key={shape}
-              variant={filters.selectedShapes.includes(shape) ? 'primary' : 'secondary'}
-              onClick={() => toggleShape(shape)}
-              className="h-20 flex flex-col items-center justify-center p-3 min-w-0"
-            >
-              <div className="text-xl mb-2 flex items-center justify-center h-6">
-                {getShapeIcon(shape)}
-              </div>
-              <span className="text-xs text-center leading-tight truncate w-full">
-                {shape}
-              </span>
-            </Button>
-          ))}
+      {availableShapes.length > 0 && (
+        <div className="space-y-3">
+          <Heading level="h3" className="text-sm uppercase tracking-wide">SHAPE</Heading>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+            {availableShapes.map((shape) => (
+              <Button
+                key={shape}
+                variant={filters.selectedShapes.includes(shape) ? 'primary' : 'secondary'}
+                onClick={() => toggleShape(shape)}
+                className="h-16 md:h-20 w-full flex flex-col items-center justify-center p-2 min-w-0"
+              >
+                <div className="text-lg md:text-xl mb-1 flex items-center justify-center h-6">
+                  {getShapeIcon(shape)}
+                </div>
+                <span className="text-[11px] md:text-xs text-center leading-tight truncate w-full">
+                  {shape}
+                </span>
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Color Selector */}
-      <div className="space-y-3">
-        <Heading level="h3" className="text-sm uppercase tracking-wide">COLOR</Heading>
-        <div className="flex flex-wrap gap-2">
-          {(filters.selectedType === 'white' ? WHITE_COLORS : FANCY_COLORS).map(color => (
-            <button
-              key={color}
-              onClick={() => toggleColor(color)}
-              className={clx(
-                "px-3 py-1 rounded-md text-sm cursor-pointer transition-colors border",
-                filters.selectedColors.includes(color)
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-400"
-              )}
-            >
-              {color}
-            </button>
-          ))}
+      {availableColors.length > 0 && (
+        <div className="space-y-3">
+          <Heading level="h3" className="text-sm uppercase tracking-wide">COLOR</Heading>
+          <div className="flex flex-wrap gap-2">
+            {availableColors.map((color) => (
+              <button
+                key={color}
+                onClick={() => toggleColor(color)}
+                className={clx(
+                  "px-3 py-1 rounded-md text-sm cursor-pointer transition-colors border",
+                  filters.selectedColors.includes(color)
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-400"
+                )}
+              >
+                {color}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Clarity Selector */}
-      <div className="space-y-3">
-        <Heading level="h3" className="text-sm uppercase tracking-wide">CLARITY</Heading>
-        <div className="flex flex-wrap gap-2">
-          {CLARITIES.map(clarity => (
-            <button
-              key={clarity}
-              onClick={() => toggleClarity(clarity)}
-              className={clx(
-                "px-3 py-1 rounded-md text-sm cursor-pointer transition-colors border",
-                filters.selectedClarities.includes(clarity)
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-400"
-              )}
-            >
-              {clarity}
-            </button>
-          ))}
+      {availableClarities.length > 0 && (
+        <div className="space-y-3">
+          <Heading level="h3" className="text-sm uppercase tracking-wide">CLARITY</Heading>
+          <div className="flex flex-wrap gap-2">
+            {availableClarities.map((clarity) => (
+              <button
+                key={clarity}
+                onClick={() => toggleClarity(clarity)}
+                className={clx(
+                  "px-3 py-1 rounded-md text-sm cursor-pointer transition-colors border",
+                  filters.selectedClarities.includes(clarity)
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-400"
+                )}
+              >
+                {clarity}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Carat Range */}
       <div className="space-y-3">
@@ -200,10 +245,10 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
               <Text className="block text-xs text-ui-fg-subtle mb-1">Min</Text>
               <Input
                 type="number"
-                value={filters.caratRange[0]}
+                value={currentCaratRange[0]}
                 onChange={(e: any) => {
                   const val = parseFloat(e.target.value) || ranges.caratRange[0]
-                  if (val <= filters.caratRange[1]) {
+                  if (val <= currentCaratRange[1]) {
                     setFilters((prev: FilterState) => ({ ...prev, caratRange: [val, prev.caratRange[1]] }))
                   }
                 }}
@@ -217,10 +262,10 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
               <Text className="block text-xs text-ui-fg-subtle mb-1">Max</Text>
               <Input
                 type="number"
-                value={filters.caratRange[1]}
+                value={currentCaratRange[1]}
                 onChange={(e: any) => {
                   const val = parseFloat(e.target.value) || ranges.caratRange[1]
-                  if (val >= filters.caratRange[0]) {
+                  if (val >= currentCaratRange[0]) {
                     setFilters((prev: FilterState) => ({ ...prev, caratRange: [prev.caratRange[0], val] }))
                   }
                 }}
@@ -232,7 +277,7 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
             </div>
           </div>
           <Text className="text-xs text-ui-fg-subtle text-center">
-            {filters.caratRange[0].toFixed(2)} - {filters.caratRange[1].toFixed(2)} carats
+            {currentCaratRange[0].toFixed(2)} - {currentCaratRange[1].toFixed(2)} carats
           </Text>
         </div>
       </div>
@@ -246,10 +291,10 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
               <Text className="block text-xs text-ui-fg-subtle mb-1">Min</Text>
               <Input
                 type="number"
-                value={filters.priceRange[0]}
+                value={currentPriceRange[0]}
                 onChange={(e: any) => {
                   const val = parseFloat(e.target.value) || ranges.priceRange[0]
-                  if (val <= filters.priceRange[1]) {
+                  if (val <= currentPriceRange[1]) {
                     setFilters((prev: FilterState) => ({ ...prev, priceRange: [val, prev.priceRange[1]] }))
                   }
                 }}
@@ -263,10 +308,10 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
               <Text className="block text-xs text-ui-fg-subtle mb-1">Max</Text>
               <Input
                 type="number"
-                value={filters.priceRange[1]}
+                value={currentPriceRange[1]}
                 onChange={(e: any) => {
                   const val = parseFloat(e.target.value) || ranges.priceRange[1]
-                  if (val >= filters.priceRange[0]) {
+                  if (val >= currentPriceRange[0]) {
                     setFilters((prev: FilterState) => ({ ...prev, priceRange: [prev.priceRange[0], val] }))
                   }
                 }}
@@ -278,7 +323,7 @@ export const NewDiamondFilters = ({ onFiltersChange }: NewDiamondFiltersProps) =
             </div>
           </div>
           <Text className="text-xs text-ui-fg-subtle text-center">
-            ${filters.priceRange[0].toLocaleString()} - ${filters.priceRange[1].toLocaleString()}
+            ${Number((currentPriceRange && currentPriceRange[0]) ?? (ranges.priceRange && ranges.priceRange[0]) ?? 0).toLocaleString()} - ${Number((currentPriceRange && currentPriceRange[1]) ?? (ranges.priceRange && ranges.priceRange[1]) ?? 0).toLocaleString()}
           </Text>
         </div>
       </div>

@@ -106,11 +106,11 @@ const DiamondProductsTable = ({
       </div>
 
       {/* Simple Table using MedusaJS components */}
-      <div className="border border-ui-border-base rounded-lg overflow-hidden">
+      <div className="border border-ui-border-base rounded-lg overflow-x-auto">
         {selectedType === 'white' ? (
           <div>
             {/* Header */}
-            <div className="bg-ui-bg-subtle border-b border-ui-border-base">
+            <div className="bg-ui-bg-subtle border-b border-ui-border-base min-w-[720px]">
               <div className="grid grid-cols-9 gap-2 p-3 text-sm font-medium">
                 <div><SortButton field="shape">Shape</SortButton></div>
                 <div><SortButton field="carat">Carat</SortButton></div>
@@ -125,7 +125,7 @@ const DiamondProductsTable = ({
             </div>
             
             {/* Rows */}
-            <div>
+            <div className="min-w-[720px]">
               {filteredAndSortedDiamonds.map((diamond) => (
                 <div key={diamond.id} className="border-b border-ui-border-subtle last:border-b-0 hover:bg-ui-bg-subtle">
                   <div className="grid grid-cols-9 gap-2 p-3 text-sm">
@@ -166,7 +166,7 @@ const DiamondProductsTable = ({
             </div>
           </div>
         ) : (
-          <div>
+          <div className="min-w-[640px]">
             {/* Header for Fancy */}
             <div className="bg-ui-bg-subtle border-b border-ui-border-base">
               <div className="grid grid-cols-8 gap-2 p-3 text-sm font-medium">

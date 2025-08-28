@@ -4,20 +4,48 @@ title: Operations & Management
 
 # Operations & Management
 
-## Management Service
+## Phase 3: Operations Development (Weeks 5-6)
 
-- Scheduled imports (daily), manual re‑runs
-- Data validation reports
-- Error queue with retry
+| Component | Development Focus | Deliverable |
+| --- | --- | --- |
+| **Management Service** | Import automation, validation, error handling | Daily scheduled imports, manual re-runs, error queue with retry |
+| **Admin Training** | Product management, order processing, payments | Comprehensive guides for all admin functions |
+| **Inventory Control** | Stock management, reconciliation, audit processes | Inventory adjustment tools, sold stone tracking |
+| **Support System** | Contact form, inquiry management, ticket system | Customer support workflow and tools |
 
-## Training & Guides
+## Management Service Features
 
-- Admin: create/edit products, manage orders, payments, fulfillments
-- Inventory: adjust levels, reconcile sold stones
-- Playbooks: incident handling, CORS/envs, script usage
+- **Automated Imports**: Scheduled daily imports with manual re-run capability
+- **Data Validation**: Comprehensive validation reports and error handling
+- **Error Management**: Queue system with automatic retry and escalation
+- **Performance Monitoring**: Import speed, success rates, data quality metrics
 
-## SLAs
+## Training & Documentation
 
-- Import freshness: < 24h
-- Order processing latency: < 2h during business hours
+| Area | Coverage | Format |
+| --- | --- | --- |
+| **Admin Operations** | Create/edit products, manage orders, payments, fulfillments | Step-by-step guides + video tutorials |
+| **Inventory Management** | Adjust levels, reconcile sold stones, audit processes | Process documentation + troubleshooting |
+| **System Maintenance** | Incident handling, CORS/envs, script usage | Playbooks + emergency procedures |
+
+## Service Level Agreements
+
+| Metric | Target | Monitoring |
+| --- | --- | --- |
+| **Import Freshness** | < 24 hours | Automated reporting + alerts |
+| **Order Processing** | < 2 hours during business hours | Real-time tracking + notifications |
+| **System Uptime** | > 99.5% | Continuous monitoring + status page |
+
+## Launch QA Checklist
+
+| Area | Checks |
+| --- | --- |
+| Payments | Stripe in test and live modes; refunds and receipts |
+| Orders & Emails | Order creation, fulfillment flows, transactional emails |
+| Catalog | Import job success, validation reports, search results accuracy |
+| SEO | Sitemap, robots.txt, canonical tags, metadata on key pages |
+| Analytics | GA4 firing for view_item, add_to_cart, begin_checkout, purchase |
+| Performance | Core pages TTFB/First Contentful Paint; image optimization |
+| Accessibility | Keyboard navigation, alt text, contrast checks |
+| Security | Admin roles, environment secrets, HTTPS everywhere |
 

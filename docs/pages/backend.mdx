@@ -4,37 +4,106 @@ title: Backend Architecture
 
 # Backend Architecture
 
-This section describes the proposed backend system, built for scalability and reliability.
+This section describes the backend system development across Phase 1 (infrastructure) and Phase 2 (application development), built for scalability and reliability.
 
-## Proposed Stack
+## Phase 1: Infrastructure Setup (Weeks 1-2)
 
-- **Platform**: A modern e-commerce platform (e.g., MedusaJS 2.x) hosted on a scalable cloud provider like Railway.
-- **Core Modules**: The system will include modules for robust inventory management, file storage (e.g., MinIO for images/certificates), and email notifications.
+| Component | Technology | Purpose |
+| --- | --- | --- |
+| **Application Platform** | MedusaJS 2.x | E-commerce core with bundled products |
+| **Hosting** | Railway | Scalable cloud deployment |
+| **Database** | PostgreSQL | Primary data storage |
+| **File Storage** | MinIO/S3 | Images, certificates, documents |
+| **Search** | Meilisearch (MVP), Redis (cache) | Faceted search and caching |
+| **Email** | Transactional service | Order confirmations, notifications |
 
-## Product Data Model
-
-- **Product Types**: The catalog will be structured to support both "White Lab Diamonds" and "Fancy Color Lab Diamonds".
-- **Key Attributes**: Essential diamond characteristics (shape, carat, color, clarity, cut, lab type, certificate) will be stored as primary product data.
-- **Inventory Logic**: Each unique diamond stone will be managed as a single inventory item to prevent overselling, even if it's presented with different settings or metals.
-
-## High-Level System Design
+## Infrastructure Schema
 
 ```mermaid
-graph TD
-    subgraph "Cloud Platform (e.g., Railway)"
-        A[E-commerce Core]
-        B[Database]
-        C[File Storage]
-        D[Background Jobs]
+graph TB
+    subgraph "Railway Cloud Platform"
+        subgraph "Application Layer"
+            A[MedusaJS Backend]
+            B[Admin Dashboard]
+            C[Storefront API]
+        end
+        
+        subgraph "Data Layer"
+            D[(PostgreSQL)]
+            E[(Redis Cache)]
+            F[File Storage MinIO]
+        end
+        
+        subgraph "External Services"
+            G[Stripe Payments]
+            H[Email Service]
+            I[Search Service]
+        end
     end
-
-    E[Admin Dashboard] --> A
-    F[Storefront] --> A
-    A --> B
-    A --> C
+    
+    J[Admin Users] --> B
+    K[Customers] --> C
     A --> D
+    A --> E
+    A --> F
+    C --> G
+    A --> H
+    A --> I
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+```
 
-    style E fill:#f9f,stroke:#333,stroke-width:2px
-    style F fill:#ccf,stroke:#333,stroke-width:2px
+## Phase 1: Data Schema Discovery (Weeks 1-2)
+
+| Component | Details |
+| --- | --- |
+| **Business Model Analysis** | Diamond characteristics, pricing models, supplier data formats |
+| **Product Types** | White Lab Diamonds, Fancy Color Lab Diamonds structure |
+| **Key Attributes** | Shape, carat, color, clarity, cut, lab type, certificate fields |
+| **Inventory Logic** | Single inventory item per unique stone (prevent overselling) |
+
+## Phase 2: Parallel Development (Weeks 2-5)
+
+### Development Approach
+- **Week 2-3**: Start backend/frontend modules as soon as architecture is clear
+- **Week 3-4**: Complete bundling logic, Stripe integration, API endpoints
+- **Week 5**: Final testing and optimization
+- **Continuous**: SEO technical implementation from the beginning
+
+### Product Settings & Bundles
+- **Bundled Products**: Use Medusa's bundled product feature for stone + setting combinations
+- **Product Settings Menu**: Admin dashboard for bundle configuration (rings, necklaces, etc.)
+- **Per-Product Variations**: Setting-specific options (ring sizes, metal types, chain lengths)
+- **Payment Integration**: Stripe integration for secure payment processing
+
+### Inventory Reservation Workflow
+
+- **Unique Stones**: Each diamond is a single-quantity inventory item tied to its certificate
+- **Temporary Reservation**: When added to cart, the item is held (reserved) for a short window to prevent double-selling
+- **Checkout Confirmation**: On successful payment, the reservation converts to a final deduction; on timeout or abandonment, stock is released automatically
+- **Admin Visibility**: Reservations and expirations appear in admin for monitoring and manual override if needed
+
+### Development Deliverables
+| Week | Deliverable |
+| --- | --- |
+| 2-3 | Core MedusaJS setup, data models, admin interface |
+| 3-4 | Bundling logic, Stripe integration, API endpoints, Meilisearch indexing |
+| 5 | Final testing, optimization, bug fixes |
+
+## System Integration Flow
+
+```mermaid
+graph LR
+    A[Supplier Data] --> B[Import Scripts]
+    B --> C[MedusaJS Core]
+    C --> D[Admin Dashboard]
+    C --> E[Storefront API]
+    E --> F[Payment Flow]
+    F --> G[Order Processing]
+    
+    style C fill:#e1f5fe
+    style F fill:#fff3e0
 ```
 

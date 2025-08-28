@@ -1,58 +1,59 @@
 import { Product, DiamondResult } from "./types"
 
 export function transformProductToDiamond(product: Product): DiamondResult | null {
-  const metadata = product.metadata
-  
-  if (!metadata || !metadata.diamond_shape || !metadata.diamond_carat || !metadata.diamond_color || 
-      !metadata.diamond_clarity || !metadata.diamond_cut) {
+  const m: any = product.metadata || {}
+
+  // Support new simplified metadata first; fallback to legacy keys if present
+  const shape = m.shape || m.diamond_shape
+  const caratStr = m.carat_weight || m.diamond_carat
+  const clarity = m.clarity || m.diamond_clarity
+  const cut = m.cut_grade || m.diamond_cut
+  const labCert = m.lab_certificate || m.certificate_lab || m.diamond_type // fallback naming
+  const certificate = m.certificate_number || m.certificate || ""
+
+  // White: color_grade; Fancy: fancy_color (optionally include color_intensity)
+  const color = (m.color_grade || (m.fancy_color && (m.color_intensity ? `${m.fancy_color}` : m.fancy_color)) || m.diamond_color)
+
+  if (!shape || !caratStr || !color || !clarity || !cut) {
     return null
   }
 
-  // Get the lowest priced variant (convert from cents to currency units)
-  const prices = product.variants
-    .filter(v => v.calculated_price)
-    .map(v => {
-      const amount = v.calculated_price?.calculated_amount ?? 0
-      return amount > 10000 ? amount / 100 : amount // handle both cents and already-unit cases
-    })
-  
+  const carat = parseFloat(String(caratStr))
+
+  // Use backend-provided pricing units as-is: prefer calculated_price, fallback to prices[0].amount
+  const prices = product.variants.map((v: any) => {
+    const calc = v?.calculated_price?.calculated_amount
+    if (typeof calc === 'number' && calc > 0) return calc
+    const base = Array.isArray(v?.prices) ? v.prices[0]?.amount : undefined
+    return typeof base === 'number' && base > 0 ? base : 0
+  })
   const lowestPrice = prices.length > 0 ? Math.min(...prices) : 0
 
-  const result = {
+  return {
     id: product.id,
-    shape: metadata.diamond_shape,
-    carat: parseFloat(metadata.diamond_carat),
-    color: metadata.diamond_color,
-    clarity: metadata.diamond_clarity,
-    cut: metadata.diamond_cut === 'EX' ? 'Excellent' : 
-         metadata.diamond_cut === 'VG' ? 'Very Good' : 
-         metadata.diamond_cut === 'ID' ? 'Ideal' : metadata.diamond_cut,
+    shape,
+    carat,
+    color,
+    clarity,
+    // New metadata already stores readable values (Excellent, Very Good, Good, Fair)
+    cut: cut,
     price: lowestPrice,
-    sku: product.variants[0]?.title?.split(' ')[0] || product.id,
+    sku: product.variants[0]?.title?.split(" ")[0] || product.id,
     handle: product.handle,
-    certificate: metadata.certificate_number || '',
-    labType: metadata.diamond_type || 'HPHT',
-    polish: metadata.diamond_polish,
-    symmetry: metadata.diamond_symmetry,
-    fluorescence: metadata.fluorescence,
-    productType: product.type?.value || metadata.product_type || 'White Lab Diamonds',
-    isOnSale: false
+    certificate,
+    labType: labCert || "IGI",
+    polish: undefined,
+    symmetry: undefined,
+    fluorescence: undefined,
+    productType: product.type?.value || 'White Lab Diamonds',
+    isOnSale: false,
   }
-
-
-
-  return result
 }
 
 export function applyFilters(diamonds: DiamondResult[], filters: any, selectedType: 'white' | 'fancy', searchQuery: string): DiamondResult[] {
-  let filteredDiamonds = diamonds.filter(diamond => {
-    // Filter by selected type
-    if (selectedType === 'white') {
-      return diamond.productType === 'White Lab Diamonds'
-    } else {
-      return diamond.productType === 'Fancy Color Lab Diamonds'
-    }
-  })
+  // Prefer type-filtered list, but if none match, show all so the table is not empty
+  const byType = diamonds.filter((d) => selectedType === 'white' ? d.productType === 'White Lab Diamonds' : d.productType === 'Fancy Color Lab Diamonds')
+  let filteredDiamonds = byType.length > 0 ? byType : diamonds
 
   // Apply additional filters if provided
   if (filters) {
@@ -64,17 +65,22 @@ export function applyFilters(diamonds: DiamondResult[], filters: any, selectedTy
         }
       }
 
-      // Cut grade filter (use actual backend values: ID, EX, VG, GD)
+      // Color filters
+      // Generic color filter used by NewDiamondFilters
+      if (Array.isArray(filters.selectedColors) && filters.selectedColors.length > 0) {
+        if (!filters.selectedColors.includes(diamond.color)) return false
+      }
+      // Backward compatibility with per-type keys
+      if (selectedType === 'white' && Array.isArray(filters.selectedWhiteColors) && filters.selectedWhiteColors.length > 0) {
+        if (!filters.selectedWhiteColors.includes(diamond.color)) return false
+      }
+      if (selectedType === 'fancy' && Array.isArray(filters.selectedFancyColors) && filters.selectedFancyColors.length > 0) {
+        if (!filters.selectedFancyColors.includes(diamond.color)) return false
+      }
+
+      // Cut grade filter
       if (filters.selectedCuts && filters.selectedCuts.length > 0) {
-        // Map display names back to backend values
-        const cutMapping: { [key: string]: string } = {
-          'Ideal': 'ID',
-          'Excellent': 'EX', 
-          'Very Good': 'VG',
-          'Good': 'GD'
-        }
-        const backendCut = cutMapping[diamond.cut] || diamond.cut
-        if (!filters.selectedCuts.includes(backendCut)) {
+        if (!filters.selectedCuts.includes(diamond.cut)) {
           return false
         }
       }
@@ -91,7 +97,7 @@ export function applyFilters(diamonds: DiamondResult[], filters: any, selectedTy
         if (diamond.price < minPrice || diamond.price > maxPrice) return false
       }
 
-      // Lab type filter
+      // Lab (certificate) filter
       if (filters.selectedLabTypes && filters.selectedLabTypes.length > 0) {
         if (!filters.selectedLabTypes.includes(diamond.labType)) {
           return false
@@ -100,21 +106,16 @@ export function applyFilters(diamonds: DiamondResult[], filters: any, selectedTy
 
       // Advanced filters (when showAdvanced is true)
       if (filters.showAdvanced) {
-        // Polish filter
         if (filters.selectedPolish && filters.selectedPolish.length > 0) {
           if (!diamond.polish || !filters.selectedPolish.includes(diamond.polish)) {
             return false
           }
         }
-
-        // Symmetry filter
         if (filters.selectedSymmetry && filters.selectedSymmetry.length > 0) {
           if (!diamond.symmetry || !filters.selectedSymmetry.includes(diamond.symmetry)) {
             return false
           }
         }
-
-        // Fluorescence filter
         if (filters.selectedFluorescence && filters.selectedFluorescence.length > 0) {
           if (!diamond.fluorescence || !filters.selectedFluorescence.includes(diamond.fluorescence)) {
             return false
@@ -122,37 +123,10 @@ export function applyFilters(diamonds: DiamondResult[], filters: any, selectedTy
         }
       }
 
-      // White diamond specific filters
-      if (selectedType === 'white') {
-        // White color filter (exact matches)
-        if (filters.selectedWhiteColors && filters.selectedWhiteColors.length > 0) {
-          if (!filters.selectedWhiteColors.includes(diamond.color)) {
-            return false
-          }
-        }
-
-        // Clarity filter (exact matches)
-        if (filters.selectedClarities && filters.selectedClarities.length > 0) {
-          if (!filters.selectedClarities.includes(diamond.clarity)) {
-            return false
-          }
-        }
-      }
-
-      // Fancy diamond specific filters
-      if (selectedType === 'fancy') {
-        // Fancy colors filter (exact matches with full names)
-        if (filters.selectedFancyColors && filters.selectedFancyColors.length > 0) {
-          if (!filters.selectedFancyColors.includes(diamond.color)) {
-            return false
-          }
-        }
-
-        // Clarity filter for fancy diamonds too
-        if (filters.selectedClarities && filters.selectedClarities.length > 0) {
-          if (!filters.selectedClarities.includes(diamond.clarity)) {
-            return false
-          }
+      // Common clarity filter
+      if (filters.selectedClarities && filters.selectedClarities.length > 0) {
+        if (!filters.selectedClarities.includes(diamond.clarity)) {
+          return false
         }
       }
 

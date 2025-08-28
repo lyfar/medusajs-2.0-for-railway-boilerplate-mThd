@@ -21,13 +21,17 @@ export const useProductData = () => {
       setLoading(true)
       try {
         const countryCode = 'dk'
-        const response = await fetch(`/api/products?region=${countryCode}&limit=100`, { next: { revalidate: 300 } })
+        const response = await fetch(`/api/products?region=${countryCode}&limit=100`, { cache: 'no-store' })
 
         if (!response.ok) {
           throw new Error('Failed to fetch products')
         }
 
         const data = await response.json()
+        if (process.env.NODE_ENV === 'development') {
+          // quick debug
+          console.log('Diamonds payload:', data)
+        }
         const validDiamonds: DiamondResult[] = data.diamonds || []
         setAllDiamonds(validDiamonds)
         if (data.ranges) {
