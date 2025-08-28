@@ -17,6 +17,12 @@ This section describes the proposed backend system, built for scalability and re
 - **Key Attributes**: Essential diamond characteristics (shape, carat, color, clarity, cut, lab type, certificate) will be stored as primary product data.
 - **Inventory Logic**: Each unique diamond stone will be managed as a single inventory item to prevent overselling, even if it's presented with different settings or metals.
 
+## Product Settings & Bundles
+
+- **Bundled Products**: Instead of generating numerous variants for a single stone, the backend will use Medusa's bundled product feature. A new **Product Settings** menu in the admin dashboard lets staff define bundles that combine a stone with ring, necklace or other settings.
+- **Per-Product Variations**: Each setting has its own relevant options (e.g., rings expose size and metal type; necklaces may expose chain length or style).
+- **Scripts & Tooling**: Existing seeding scripts in the backend have been executed to populate sample data and will be extended to handle the new bundle schema.
+
 ## High-Level System Design
 
 ```mermaid
