@@ -4,50 +4,58 @@ title: Lab Grown Diamonds – Proposal
 
 # Proposal
 
-**Total investment (one‑off build)**: 200,000 HKD
+**Total investment (one‑off build)**: 250,000 HKD
 
-This proposal outlines the plan to launch a premium lab‑grown diamond storefront and supporting operations. It focuses on outcomes, scope and timelines without technical implementation details.
+The kickoff budget covers design, development and launch. After go‑live, a recurring maintenance retainer ensures the site and supporting services stay healthy.
+
+This proposal outlines the plan to launch a premium lab‑grown diamond storefront and supporting operations. It focuses on outcomes, scope and timelines without technical implementation details. Instead of generating numerous variants for each stone, the solution will leverage **Medusa.js bundled products** with a dedicated **Product Settings** menu to configure rings, necklaces and other styles.
 
 ## Deliverables (high‑level)
 
-- Ecommerce website (requirements to be finalized)
-- Backend architecture (MedusaJS + inventory + imports)
-- Catalog and SKU strategy (white + fancy product types, thousands of SKUs)
-- Management service (imports, ops, training docs)
-- SEO and content (site structure, blog, AI‑assisted long‑form)
-- Branding (basic + advanced consultancy)
-- Social media (content creation + management)
-- AI automations (support bot, order updates)
-- Email marketing (flows + campaigns)
+- [Ecommerce website](./ecommerce)
+- [Backend architecture](./backend) (MedusaJS + inventory + imports)
+- [Catalog and bundling strategy](./catalog) (white + fancy product types, thousands of SKUs)
+- [Operations & management](./operations) (imports, ops, training docs)
+- [SEO and content](./seo) (site structure, blog, AI‑assisted long‑form)
+- [Branding](./branding) (basic consultancy to start)
+- [Social media](./social) (content creation + management)
+- [AI automations](./automations) (support bot, order updates)
+- [Email marketing](./email) (flows + campaigns)
 
 ## Timeline (12 weeks)
 
-- Weeks 1–2: Discovery, IA, branding baseline, infrastructure
-- Weeks 3–5: Backend build (types, seeding, inventory, imports), storefront base
-- Weeks 6–7: Filters/table UX, performance, admin training
-- Weeks 8–9: SEO structure, content pipeline, blog
-- Weeks 10–11: Automations, email flows, QA, UAT
-- Week 12: Launch, handover, post‑launch support
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title 12-Week Timeline
+    section Phase
+    Discovery & IA             :a1, 2024-01-01, 14d
+    Backend & Storefront Build :a2, after a1, 21d
+    UX & Admin Training        :a3, after a2, 14d
+    SEO & Content Pipeline     :a4, after a3, 14d
+    Automations & QA           :a5, after a4, 14d
+    Launch & Handover          :a6, after a5, 7d
+```
 
 ## Budget Breakdown (HKD)
 
-- Engineering (backend + frontend): 110,000
-- Catalog ops + import tooling: 25,000
-- SEO + content system: 18,000
-- Branding (basic + advisory): 12,000
-- Social (setup + first month content): 10,000
-- Automations (bots + order updates): 12,000
-- Email (flows + templates): 8,000
-- Contingency (3%): 5,000
+- Engineering (backend + frontend): 140,000
+- Catalog ops + import tooling: 30,000
+- SEO + content system: 20,000
+- Branding kickoff (minimal): 10,000
+- Social (setup + first month content): 15,000
+- Automations (bots + order updates): 15,000
+- Email (flows + templates): 10,000
+- Contingency: 10,000
 
-> Total one‑off: 200,000 HKD
+> Total one‑off kickoff budget: 250,000 HKD
 
 ## Ongoing Monthly Retainer (HKD)
 
-- Hosting & infrastructure (Railway, object storage, search, monitoring): 6,000–12,000
-- Social Media Management (planning, posting, reporting): 8,000
-- Social Content Production (design, copy, short‑form video): 8,000
-- Optional: Performance marketing management (ex. paid social/search): on request
+- Agency maintenance (catalog updates, uptime, accessibility): 8,000
+- Hosting & infrastructure (Railway, object storage, search): ~1,000
+- Social media management & content (incl. one day photo/video): 10,000
+- Optional: Performance marketing management (paid social/search): on request
 
 ## Vision Diagram
 

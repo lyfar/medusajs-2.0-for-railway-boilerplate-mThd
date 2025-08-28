@@ -14,7 +14,8 @@ This section outlines the proposed strategy for managing a large and detailed di
 ## Inventory & Variant Strategy
 
 - **Unique Stone Management**: Each diamond is treated as a unique, single-quantity item tied to its certificate, ensuring no double-selling.
-- **Setting & Metal Options**: Customers can visualize a single stone with various settings (e.g., ring, pendant) and metals, which will be managed as product variants without affecting the stone's core inventory.
+- **Bundled Settings**: Rather than pre-generating variants for every stone, settings are configured as Medusa.js **bundled products**. Staff can attach a diamond to a ring, pendant or other setting at order time.
+- **Contextual Variations**: Each setting exposes only its relevant options (rings allow size and metal type; necklaces may offer chain length or style), keeping the stone inventory untouched.
 
 ## Data Import & Management
 
@@ -25,7 +26,7 @@ This section outlines the proposed strategy for managing a large and detailed di
 
 - **Proposal**: A clean, human-readable SKU system will be implemented to simplify inventory management and reporting.
   - **Example Stone SKU**: `1.93-OV-I-VS2` (Carat-Shape-Color-Clarity)
-  - **Example Variant SKU**: `1.93-OV-I-VS2-YG-14K-SOL` (Stone + Setting Details)
+  - **Example Bundle SKU**: `1.93-OV-I-VS2|RING-YG-14K` (Stone | Setting + Metal)
 
 ## Catalog Workflow
 
